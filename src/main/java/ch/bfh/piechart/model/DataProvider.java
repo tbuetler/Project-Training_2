@@ -3,7 +3,11 @@
  */
 package ch.bfh.piechart.model;
 
+import ch.bfh.piechart.datalayer.ConnectionManager;
 import ch.bfh.piechart.datalayer.SalesValue;
+import ch.bfh.piechart.datalayer.SalesValueRepository;
+
+import java.sql.Connection;
 import java.util.List;
 
 // TODO Complete import statements
@@ -17,12 +21,12 @@ import java.util.List;
 	*/
 
 public class DataProvider {
-
+	private static List<SalesValue> salesValues;
 	/*
 		* Loads all sales values, computes there relative percentage values, and stores
 		* the updated sales values in the database.
 		*/
-	static {
+	static  {
 		// TODO implement
 		/*
 			* 1. It makes a connection to the database using the ConnectionManager;
@@ -32,6 +36,35 @@ public class DataProvider {
 			* Note: If any kind of exception is thrown in the above 4 steps then
 			* catch it in a RuntimeException and throw it from within the static block.
 			*/
+
+		try {
+			// 1. It makes a connection to the database using the ConnectionManager;
+			Connection connection = ConnectionManager.getConnection(true);
+
+			// 2. It reads all sales values available;
+			salesValues = new SalesValueRepository(connection).findAll();
+
+			// 3. It computes the relative percentage for the sales values;
+			int totalSum = 0;
+			for (SalesValue salesValue : salesValues) {
+				totalSum += salesValue.getNumber();
+			}
+
+			for (SalesValue salesValue : salesValues) {
+				double percentage = (salesValue.getNumber() / (double) totalSum * 100);
+				salesValue.setPercentage(percentage);
+			}
+
+			// 4. It updates the sales values in the database.
+			SalesValueRepository repository = new SalesValueRepository(connection);
+			for (SalesValue salesValue : salesValues) {
+				repository.update(salesValue);
+			}
+
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+
 	}
 
 	/**
@@ -42,6 +75,9 @@ public class DataProvider {
 		*/
 	public List<SalesValue> getValueList() throws Exception {
 		// TODO implement
-		throw new UnsupportedOperationException();
+		if (salesValues == null || salesValues.isEmpty()) {
+			throw new Exception("Sales values not initialized");
+		}
+		return salesValues;
 	}
 }
