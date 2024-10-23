@@ -18,17 +18,41 @@ import java.util.logging.Logger;
  */
 public class SalesValueRepository {
 	// TODO Complete JDBC-SQL statement
-	private static final String FIND_ALL_QUERY = "SELECT ...";
+	private static final String FIND_ALL_QUERY =
+			"SELECT * " +
+			"FROM SalesValue";
+
 	// TODO Complete JDBC-SQL statement
-	private static final String FIND_BY_ID_QUERY = "SELECT * FROM SalesValue ...";
+	private static final String FIND_BY_ID_QUERY =
+			"SELECT * " +
+			"FROM SalesValue " +
+			"WHERE id = ?";
+
 	// TODO Complete JDBC-SQL statement
-	private static final String FIND_BY_PRODUCTID_QUERY = "SELECT * FROM SalesValue ...";
+	private static final String FIND_BY_PRODUCTID_QUERY =
+			"SELECT * " +
+			"FROM SalesValue " +
+			"WHERE productId = ?";
+
 	// TODO Complete JDBC-SQL statement
-	private static final String INSERT_QUERY = "INSERT INTO SalesValue ...";
+	private static final String INSERT_QUERY =
+			"INSERT INTO SalesValue (productId, number, percentage) " +
+			"VALUES (?, ?, ?)";
+
 	// TODO Complete JDBC-SQL statement
-	private static final String UPDATE_QUERY = "UPDATE SalesValue SET ...";
+	private static final String UPDATE_QUERY =
+			"UPDATE SalesValue " +
+			"SET " +
+			"productId = ?, " +
+			"number = ?, " +
+			"percentage = ? " +
+			"WHERE id = ?";
+
 	// TODO Complete JDBC-SQL statement
-	private static final String DELETE_QUERY = "DELETE FROM SalesValue ...";
+	private static final String DELETE_QUERY =
+			"DELETE " +
+			"FROM SalesValue " +
+			"WHERE id = ?";
 
 	private static final Logger LOGGER = Logger.getLogger(SalesValueRepository.class.getName());
 
