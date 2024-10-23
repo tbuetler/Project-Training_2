@@ -1,11 +1,11 @@
 package ch.bfh.piechart.ui;
 
 import ch.bfh.piechart.datalayer.SalesValue;
-import javafx.scene.Group;
-import org.w3c.dom.events.MouseEvent;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import javafx.scene.Group;
 
 public class PieChartUIControl extends Group {
 
