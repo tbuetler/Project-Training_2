@@ -3,6 +3,8 @@
  */
 package ch.bfh.matrix;
 
+import java.util.Arrays;
+
 /**
 	* Represents a two-dimensional matrix of double-values. Objects are immutable
 	* and methods implementing matrix operations always return new matrix objects.
@@ -24,7 +26,23 @@ public class Matrix {
 		*/
 	public Matrix(final double[][] values) throws IllegalArgumentException {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		if (values == null || values.length == 0 || values[0].length== 0) {
+			throw new IllegalArgumentException("Invalid matrix dimensions.");
+		}
+
+		// Check for rectangular matrix
+		int columns = values[0].length;
+		for (double[] row : values) {
+			if (row.length != columns) {
+				throw new IllegalArgumentException("Matrix must be rectangular.");
+			}
+		}
+
+		// Ensure immutability
+		this.values = new double[values.length][columns];
+		for (int i = 0; i < values.length; i++) {
+			this.values[i] = Arrays.copyOf(values[i], columns);
+		}
 	}
 
 	/**
@@ -32,7 +50,7 @@ public class Matrix {
 		*/
 	public int getNbOfLines() {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		return values.length;
 	}
 
 	/**
@@ -40,7 +58,7 @@ public class Matrix {
 		*/
 	public int getNbOfColumns() {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		return values[0].length;
 	}
 
 	/**
@@ -52,7 +70,10 @@ public class Matrix {
 		*/
 	public double get(final int line, final int col) {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		if (line < 0 || line >= getNbOfLines() || col < 0 || col >= getNbOfColumns()) {
+			throw new IndexOutOfBoundsException("Invalid indices for matrix access");
+		}
+		return values[line][col];
 	}
 
 	/**
@@ -62,7 +83,16 @@ public class Matrix {
 		*/
 	public Matrix transpose() {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		int rows = getNbOfLines();
+		int cols = getNbOfColumns();
+		double[][] transposedValues = new double[cols][rows];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				transposedValues[j][i] = values[i][j];
+			}
+		}
+		return new Matrix(transposedValues);
 	}
 
 	/**
@@ -73,7 +103,16 @@ public class Matrix {
 		*/
 	public Matrix multiply(final double scalar) {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		int rows = getNbOfLines();
+		int cols = getNbOfColumns();
+		double[][] result = new double[rows][cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				result[i][j] = values[i][j] * scalar;
+			}
+		}
+		return new Matrix(result);
 	}
 
 	/**
@@ -84,7 +123,23 @@ public class Matrix {
 		*/
 	public Matrix multiply(final Matrix other) {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		if (getNbOfColumns() != other.getNbOfLines()) {
+			throw new IllegalArgumentException("Matrix dimensions do not match.");
+		}
+
+		int rows = getNbOfLines();
+		int cols = other.getNbOfColumns();
+		double[][] result = new double[rows][cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				result[i][j] = 0;
+				for (int k = 0; k < getNbOfColumns(); k++) {
+					result[i][j] += values[i][k] * other.get(k, j);
+				}
+			}
+		}
+		return new Matrix(result);
 	}
 
 	/**
@@ -95,24 +150,56 @@ public class Matrix {
 		*/
 	public Matrix add(final Matrix other) {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		int rows = getNbOfLines();
+		int cols = getNbOfColumns();
+		double[][] result = new double[rows][cols];
+
+		for (int i = 0; i < rows; i++) {
+			for (int j = 0; j < cols; j++) {
+				result[i][j] = values[i][j] + other.get(i, j);
+			}
+		}
+		return new Matrix(result);
 	}
 
 	@Override
 	public int hashCode() {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		return Arrays.deepHashCode(values);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		// TODO: implement
-		throw new UnsupportedOperationException();
+		if (this == obj) {
+			return true;
+		}
+		if (obj == null || getClass() != obj.getClass()) {
+			return false;
+		}
+
+		Matrix other = (Matrix) obj;
+		if (getNbOfLines() != other.getNbOfLines() || getNbOfColumns() != other.getNbOfColumns()) {
+			return false;
+		}
+
+		for (int i = 0; i < getNbOfLines(); i++) {
+			for (int j = 0; j < getNbOfColumns(); j++) {
+				if (Math.abs(values[i][j] - other.get(i, j)) > EPSILON) {
+					return false;
+				}
+			}
+		}
+		return true;
 	}
 
 	@Override
 	public String toString() {
 		// TODO: implement
-		return super.toString();
+		StringBuilder result = new StringBuilder();
+		for (double[] row : values) {
+			result.append(Arrays.toString(row)).append("\n");
+		}
+		return result.toString();
 	}
 }
