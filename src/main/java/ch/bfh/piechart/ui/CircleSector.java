@@ -36,7 +36,7 @@ public class CircleSector extends Path {
 	private boolean detached = false;
 
 	private Matrix coordsDetached;
-	private /*final*/Matrix coordsAttached;
+	private Matrix coordsAttached;
 
 	/**
 	 * Returns the coordinates of a dettached circle sector
@@ -71,19 +71,19 @@ public class CircleSector extends Path {
 		  Finally, call the update method to draw the path of the circle sector:
 		 update(coordsAttached);
 		*/
-		double radius = 1.0; // Standard radius - kann angepasst werden
-		coordsAttached = new Matrix(new double[][]{
-				{0.0}, // Center X
-				{0.0}, // Center Y
-				{1.0}, // Homogene Koordinate für Center
-				{radius * Math.cos(startAngle)}, // Start X
-				{radius * Math.sin(startAngle)}, // Start Y
-				{1.0}, // Homogene Koordinate für Start
-				{radius * Math.cos(endAngle)}, // End X
-				{radius * Math.sin(endAngle)}, // End Y
-				{1.0} // Homogene Koordinate für End
+
+		coordsDetached = new Matrix(new double[][]{
+				{0.0},
+				{0.0},
+				{1.0}
 		});
-		update(coordsAttached);
+
+		coordsAttached = new Matrix(new double[][]{
+				{0.0},
+				{0.0},
+				{1.0}
+		});
+
 	}
 
 	/**

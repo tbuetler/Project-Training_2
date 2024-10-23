@@ -6,9 +6,9 @@ package ch.bfh.matrix;
 import java.util.Arrays;
 
 /**
-	* Represents a two-dimensional matrix of double-values. Objects are immutable
-	* and methods implementing matrix operations always return new matrix objects.
-	*/
+ * Represents a two-dimensional matrix of double-values. Objects are immutable
+ * and methods implementing matrix operations always return new matrix objects.
+ */
 public class Matrix {
 
 	// expected precision in floating point calculations
@@ -19,14 +19,14 @@ public class Matrix {
 	protected double[][] values;
 
 	/**
-		* Creates a matrix with values given in a two-dimensional array. First
-		* dimension represents lines, second the columns.
-		*
-		* @param values a non-empty and rectangular two-dimensional array
-		*/
+	 * Creates a matrix with values given in a two-dimensional array. First
+	 * dimension represents lines, second the columns.
+	 *
+	 * @param values a non-empty and rectangular two-dimensional array
+	 */
 	public Matrix(final double[][] values) throws IllegalArgumentException {
 		// TODO: implement
-		if (values == null || values.length == 0 || values[0].length== 0) {
+		if (values == null || values.length == 0 || values[0].length == 0) {
 			throw new IllegalArgumentException("Invalid matrix dimensions.");
 		}
 
@@ -46,41 +46,38 @@ public class Matrix {
 	}
 
 	/**
-		* @return the number of lines in this matrix
-		*/
+	 * @return the number of lines in this matrix
+	 */
 	public int getNbOfLines() {
 		// TODO: implement
 		return values.length;
 	}
 
 	/**
-		* @return the number of columns in this matrix
-		*/
+	 * @return the number of columns in this matrix
+	 */
 	public int getNbOfColumns() {
 		// TODO: implement
 		return values[0].length;
 	}
 
 	/**
-		* Returns the value at the given position in the matrix.
-		*
-		* @param line indicates the index for the line
-		* @param col  indicates the index for the column
-		* @return the value at the indicated position
-		*/
+	 * Returns the value at the given position in the matrix.
+	 *
+	 * @param line indicates the index for the line
+	 * @param col  indicates the index for the column
+	 * @return the value at the indicated position
+	 */
 	public double get(final int line, final int col) {
 		// TODO: implement
-		if (line < 0 || line >= getNbOfLines() || col < 0 || col >= getNbOfColumns()) {
-			throw new IndexOutOfBoundsException("Invalid indices for matrix access");
-		}
 		return values[line][col];
 	}
 
 	/**
-		* Calculates the transpose of this matrix.
-		*
-		* @return the transpose of this matrix
-		*/
+	 * Calculates the transpose of this matrix.
+	 *
+	 * @return the transpose of this matrix
+	 */
 	public Matrix transpose() {
 		// TODO: implement
 		int rows = getNbOfLines();
@@ -96,11 +93,11 @@ public class Matrix {
 	}
 
 	/**
-		* Calculates the product of this matrix with the given scalar value.
-		*
-		* @param scalar the scalar value to multiply with
-		* @return the scalar product
-		*/
+	 * Calculates the product of this matrix with the given scalar value.
+	 *
+	 * @param scalar the scalar value to multiply with
+	 * @return the scalar product
+	 */
 	public Matrix multiply(final double scalar) {
 		// TODO: implement
 		int rows = getNbOfLines();
@@ -116,11 +113,11 @@ public class Matrix {
 	}
 
 	/**
-		* Calculates the product of this matrix with another matrix.
-		*
-		* @param other the other matrix to multiply with
-		* @return the matrix product
-		*/
+	 * Calculates the product of this matrix with another matrix.
+	 *
+	 * @param other the other matrix to multiply with
+	 * @return the matrix product
+	 */
 	public Matrix multiply(final Matrix other) {
 		// TODO: implement
 		if (getNbOfColumns() != other.getNbOfLines()) {
@@ -143,11 +140,11 @@ public class Matrix {
 	}
 
 	/**
-		* Calculates the sum of this matrix with another matrix.
-		*
-		* @param other the other matrix to add with
-		* @return the matrix sum
-		*/
+	 * Calculates the sum of this matrix with another matrix.
+	 *
+	 * @param other the other matrix to add with
+	 * @return the matrix sum
+	 */
 	public Matrix add(final Matrix other) {
 		// TODO: implement
 		int rows = getNbOfLines();
