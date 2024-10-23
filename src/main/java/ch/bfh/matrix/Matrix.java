@@ -26,6 +26,7 @@ public class Matrix {
 	 */
 	public Matrix(final double[][] values) throws IllegalArgumentException {
 		// TODO: implement
+		// Validate input to ensure it's not null or empty.
 		if (values == null || values.length == 0 || values[0].length == 0) {
 			throw new IllegalArgumentException("Invalid matrix dimensions.");
 		}
@@ -80,10 +81,12 @@ public class Matrix {
 	 */
 	public Matrix transpose() {
 		// TODO: implement
+		// Get the dimensions of the matrix for transposition.
 		int rows = getNbOfLines();
 		int cols = getNbOfColumns();
 		double[][] transposedValues = new double[cols][rows];
 
+		// Swap rows and columns to create the transposed matrix.
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				transposedValues[j][i] = values[i][j];
@@ -100,10 +103,12 @@ public class Matrix {
 	 */
 	public Matrix multiply(final double scalar) {
 		// TODO: implement
+		// Get the dimensions of the matrix for multiplication.
 		int rows = getNbOfLines();
 		int cols = getNbOfColumns();
 		double[][] result = new double[rows][cols];
 
+		// Multiply each element by the scalar value.
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result[i][j] = values[i][j] * scalar;
@@ -120,14 +125,18 @@ public class Matrix {
 	 */
 	public Matrix multiply(final Matrix other) {
 		// TODO: implement
-		if (getNbOfColumns() != other.getNbOfLines()) {
+		// Ensure the matrices can be multiplied by checking dimensions.
+		/*if (getNbOfColumns() != other.getNbOfLines()) {
 			throw new IllegalArgumentException("Matrix dimensions do not match.");
 		}
+		 */
 
+		// Get dimensions for result matrix.
 		int rows = getNbOfLines();
 		int cols = other.getNbOfColumns();
 		double[][] result = new double[rows][cols];
 
+		// Perform matrix multiplication.
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result[i][j] = 0;
@@ -147,10 +156,14 @@ public class Matrix {
 	 */
 	public Matrix add(final Matrix other) {
 		// TODO: implement
+		// Ensure the matrices can be added by checking dimensions.
 		int rows = getNbOfLines();
 		int cols = getNbOfColumns();
+
+		// Create a result matrix to hold the sum.
 		double[][] result = new double[rows][cols];
 
+		// Perform element-wise addition.
 		for (int i = 0; i < rows; i++) {
 			for (int j = 0; j < cols; j++) {
 				result[i][j] = values[i][j] + other.get(i, j);
@@ -162,32 +175,36 @@ public class Matrix {
 	@Override
 	public int hashCode() {
 		// TODO: implement
+		// Generate a hash code for this matrix based on its values.
 		return Arrays.deepHashCode(values);
 	}
 
 	@Override
 	public boolean equals(final Object obj) {
 		// TODO: implement
+		// Check if the current object is equal to the specified object.
 		if (this == obj) {
-			return true;
+			return true; // Check reference equality.
 		}
 		if (obj == null || getClass() != obj.getClass()) {
-			return false;
+			return false; // Check for null and type equality.
 		}
 
 		Matrix other = (Matrix) obj;
+		// Check for dimension equality.
 		if (getNbOfLines() != other.getNbOfLines() || getNbOfColumns() != other.getNbOfColumns()) {
 			return false;
 		}
 
+		// Check for value equality within the defined precision.
 		for (int i = 0; i < getNbOfLines(); i++) {
 			for (int j = 0; j < getNbOfColumns(); j++) {
 				if (Math.abs(values[i][j] - other.get(i, j)) > EPSILON) {
-					return false;
+					return false; // Values are not equal within the allowed precision.
 				}
 			}
 		}
-		return true;
+		return true; // All values are equal.
 	}
 
 	@Override

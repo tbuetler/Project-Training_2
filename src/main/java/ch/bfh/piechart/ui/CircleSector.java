@@ -3,6 +3,7 @@
  */
 package ch.bfh.piechart.ui;
 
+import ch.bfh.matrix.GraphicOps;
 import ch.bfh.matrix.Matrix;
 import javafx.scene.shape.ArcTo;
 import javafx.scene.shape.ClosePath;
@@ -71,19 +72,13 @@ public class CircleSector extends Path {
 		  Finally, call the update method to draw the path of the circle sector:
 		 update(coordsAttached);
 		*/
-
-		coordsDetached = new Matrix(new double[][]{
-				{0.0},
-				{0.0},
-				{1.0}
-		});
-
-		coordsAttached = new Matrix(new double[][]{
-				{0.0},
-				{0.0},
-				{1.0}
-		});
-
+		Matrix translation = GraphicOps.translate(centerX, centerY);
+		Matrix rotation = GraphicOps.rotate(startAngle);
+		Matrix scaling = GraphicOps.scale(radius);
+		Matrix detaching = GraphicOps.translate(DETACH_VECTOR.get(0, 0), DETACH_VECTOR.get(1, 0));
+		coordsAttached = translation.multiply(rotation).multiply(scaling).multiply(detaching);
+		coordsDetached = translation.multiply(rotation).multiply(scaling);
+		update(coordsAttached);
 	}
 
 	/**
@@ -156,13 +151,9 @@ public class CircleSector extends Path {
 		// TODO implement
 		detached = !detached;
 		if (detached) {
-			coordsDetached = coordsAttached;
-			System.out.println("Detached");
+			update(coordsDetached);
 		} else {
-			coordsAttached = coordsDetached;
-			System.out.println("Attached");
+			update(coordsAttached);
 		}
-		update(coordsDetached);
 	}
-
 }

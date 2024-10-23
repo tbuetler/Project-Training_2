@@ -54,8 +54,10 @@ public class SalesValueRepository {
 			"FROM SalesValue " +
 			"WHERE id = ?";
 
+	// Logger for debugging and monitoring SQL operations
 	private static final Logger LOGGER = Logger.getLogger(SalesValueRepository.class.getName());
 
+	// Database connection instance
 	private final Connection connection;
 
 	public SalesValueRepository(Connection connection) {

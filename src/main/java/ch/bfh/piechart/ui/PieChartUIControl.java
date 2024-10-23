@@ -37,18 +37,20 @@ public class PieChartUIControl extends Group {
 	 */
 	public static List<Double> getAngles(List<SalesValue> values) {
 		// TODO: implement
-		double total = 0.0;
+		double total = 0.0; // Initialize total percentage
 
+		// Calculate the total percentage from the sales values
 		for (SalesValue value : values) {
 			total += value.getPercentage();
 		}
 
-		List<Double> angles = new ArrayList<>();
+		List<Double> angles = new ArrayList<>(); // List to store calculated angles
 		double currentAngle = 0.0;
 
+		// Calculate angles for each sales value based on its percentage
 		for (SalesValue value : values) {
 			double percentage = value.getPercentage();
-			double angle = (percentage / total) * 2.0 * Math.PI;
+			double angle = (percentage / total) * 2.0 * Math.PI; // Calculate the angle for this slice
 			currentAngle += angle;
 			angles.add(currentAngle);
 
@@ -102,6 +104,7 @@ public class PieChartUIControl extends Group {
 		centerY = newY;
 		radius = newR;
 
+		// Update the position of each sector to reflect the new size and position
 		for (CircleSector sector : sectors) {
 			sector.update(centerX, centerY, radius);
 		}
