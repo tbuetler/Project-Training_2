@@ -73,7 +73,7 @@ public class DataProvider {
 		* @return a list of sales values
 		* @throws Exception if sales values cannot be obtained
 		*/
-	public List<SalesValue> getValueList() throws Exception {
+	public static List<SalesValue> getValueList() throws Exception {
 		// TODO implement
 		if (salesValues == null || salesValues.isEmpty()) {
 			throw new Exception("Sales values not initialized");

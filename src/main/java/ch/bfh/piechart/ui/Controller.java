@@ -4,6 +4,7 @@
 package ch.bfh.piechart.ui;
 
 import ch.bfh.piechart.datalayer.SalesValue;
+import ch.bfh.piechart.model.DataProvider;
 import javafx.application.Platform;
 import javafx.beans.value.ChangeListener;
 import javafx.fxml.FXML;
@@ -36,13 +37,19 @@ public class Controller {
 
 			try {
 				// TODO Remove the following line
-				heading.setText("Here should be a pie chart");
+				// heading.setText("Here should be a pie chart");
 
 				// TODO Create a PieChartUIControl which fits the window to 80%
 
 				// TODO Add the PieChartUIControl object to the pane
 
 				// TODO Add the SalesValues from the DataProvider to the PieChartUIControl object
+
+				chartData = DataProvider.getValueList();
+				pieChart = new PieChartUIControl(pane.getWidth() / 2, pane.getHeight() / 2, pane.getWidth() * 0.4);
+				pane.getChildren().add(pieChart);
+				pieChart.addData(chartData);
+				heading.setText("Sales Data Pie Chart");
 
 
 			} catch (Exception ex) {
