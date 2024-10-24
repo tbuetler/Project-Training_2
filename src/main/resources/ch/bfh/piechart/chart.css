@@ -1,5 +1,5 @@
 .pane {
-    -fx-background-color: #334455;
+    -fx-background-color: #0d0d0d; /* Changed the background color for personal preference*/
 }
 .error {
 	-fx-font-size: 24px;

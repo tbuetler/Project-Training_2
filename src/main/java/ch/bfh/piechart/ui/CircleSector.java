@@ -72,15 +72,28 @@ public class CircleSector extends Path {
 		  Finally, call the update method to draw the path of the circle sector:
 		 update(coordsAttached);
 		*/
-		Matrix translation = GraphicOps.translate(centerX, centerY);
-		Matrix rotation = GraphicOps.rotate(startAngle);
-		Matrix scaling = GraphicOps.scale(radius);
-		Matrix detaching = GraphicOps.translate(DETACH_VECTOR.get(0, 0), DETACH_VECTOR.get(1, 0));
-		coordsAttached = translation.multiply(rotation).multiply(scaling).multiply(detaching);
-		coordsDetached = translation.multiply(rotation).multiply(scaling);
+
+		// Coordinates for attached sector (center, start point, end point)
+		// Start with unit vectors and transform them using rotation matrices
+		Matrix center = GraphicOps.NULL_VECTOR;  // Center of the pie chart sector
+
+		Matrix startVector = GraphicOps.rotate(GraphicOps.UNIT_Y_VECTOR, startAngle);  // Rotated start position
+		Matrix endVector = GraphicOps.rotate(GraphicOps.UNIT_Y_VECTOR, endAngle);      // Rotated end position
+
+		// Create coordsAttached matrix (homogeneous coordinates)
+		coordsAttached = new Matrix(new double[][]{
+				{center.get(0, 0), startVector.get(0, 0), endVector.get(0, 0)},
+				{center.get(1, 0), startVector.get(1, 0), endVector.get(1, 0)},
+				{1, 1, 1}  // Homogeneous coordinates
+		});
+
+		// Create coordsDetached by applying DETACH_VECTOR (translation)
+		coordsDetached = GraphicOps.translate(coordsAttached, DETACH_VECTOR);
+
+		// Initially set the path to the attached state
+		// it changes with the onClick method
 		update(coordsAttached);
 	}
-
 	/**
 	 * Updates the visual representation based on positions given in a matrix.
 	 * The		* matrix must contain 3 columns: 0 = center position,
@@ -151,9 +164,9 @@ public class CircleSector extends Path {
 		// TODO implement
 		detached = !detached;
 		if (detached) {
-			update(coordsDetached);
-		} else {
 			update(coordsAttached);
+		} else {
+			update(coordsDetached);
 		}
 	}
 }

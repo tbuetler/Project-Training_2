@@ -3,6 +3,7 @@
  */
 package ch.bfh.piechart;
 
+import ch.bfh.piechart.datalayer.SalesValueLoader;
 import javafx.application.Application;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
@@ -40,7 +41,7 @@ public class App extends Application {
 	 */
 	public static void main(String[] args) {
 		// TODO Uncomment the following line when having completed class SalesValueRepository
-		// SalesValueLoader.loadSalesValues();
+		SalesValueLoader.loadSalesValues();
 		launch();
 	}
 

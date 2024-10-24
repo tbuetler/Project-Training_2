@@ -21,7 +21,7 @@ import java.util.List;
 	*/
 
 public class DataProvider {
-	private static List<SalesValue> salesValues;
+	private static final List<SalesValue> salesValues;
 	/*
 		* Loads all sales values, computes there relative percentage values, and stores
 		* the updated sales values in the database.
