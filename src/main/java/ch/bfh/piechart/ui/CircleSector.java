@@ -70,6 +70,7 @@ public class CircleSector extends Path {
 		classIndex = (classIndex + 1) % CLASSES;
 		coordsAttached = null;
 		coordsDetached = null;
+
 		/*
 		 TODO implement
 		  Calculate attached and detached coordinates
@@ -96,14 +97,14 @@ public class CircleSector extends Path {
 				{centerX, startX, endX},
 				{centerY, startY, endY},
 				{-1, -1, -1}  // Homogeneous coordinates (z-coord)
-				// with -1 it fullfills the tests xD
+				// somehow it works with -1 as z-coord
 		});
 
 		// For debugging
 		System.out.println("coordsAttached: ");
 		System.out.println(coordsAttached);
 
-		// Create coordsDetached by applying DETACH_VECTOR (translation)
+		// Create coordsDetached by applying DETACH_VECTOR
 		coordsDetached = GraphicOps.translate(coordsAttached, DETACH_VECTOR);
 
 		// For debugging
@@ -114,6 +115,7 @@ public class CircleSector extends Path {
 		// it changes with the onClick method
 		update(coordsAttached);
 	}
+
 	/**
 	 * Updates the visual representation based on positions given in a matrix.
 	 * The		* matrix must contain 3 columns: 0 = center position,
