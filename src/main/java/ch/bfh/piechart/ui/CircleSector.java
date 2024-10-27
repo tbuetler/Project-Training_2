@@ -44,7 +44,7 @@ public class CircleSector extends Path {
 	private Matrix coordsAttached;
 
 	/**
-	 * Returns the coordinates of a dettached circle sector
+	 * Returns the coordinates of a detached circle sector
 	 *
 	 * @return Matrix with coordinates
 	 */
