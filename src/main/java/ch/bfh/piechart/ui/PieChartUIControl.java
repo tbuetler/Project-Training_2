@@ -12,7 +12,7 @@ public class PieChartUIControl extends Group {
 	private double centerX;
 	private double centerY;
 	private double radius;
-	private List<CircleSector> sectors; // To hold the CircleSectors
+	private final List<CircleSector> sectors; // To hold the CircleSectors
 
 	/**
 	 * @param x the x-value of the center position
@@ -53,9 +53,9 @@ public class PieChartUIControl extends Group {
 			double angle = (percentage / total) * 2.0 * Math.PI; // Calculate the angle for this slice
 			angles.add(currentAngle);
 			currentAngle += angle;
-
 		}
 		angles.add(2.0 * Math.PI); // Add the last angle
+		System.out.println("Angles: " + angles);
 		return angles;
 	}
 
@@ -85,6 +85,7 @@ public class PieChartUIControl extends Group {
 			sectors.add(sector); // Add the sector to the list
 			this.getChildren().add(sector); // Add the sector to the UI
 			startAngle = endAngle; // Update startAngle for the next sector
+			System.out.println("Start angle: " + startAngle + "\nEnd angle: " + endAngle + "\nIndex: " + i + "\nSize: " + sectors.size() + "Count");
 		}
 
 		// Update the positions of the sectors after they are created

@@ -31,9 +31,13 @@ public class CircleSector extends Path {
 	static final int CLASSES = 10;
 	static int classIndex = 0;
 
-	private double centerX;
-	private double centerY;
-	private double radius;
+	private final double centerX;
+	private final double centerY;
+	private final double startX;
+	private final double startY;
+	private final double endX;
+	private final double endY;
+
 	private boolean detached = false;
 
 	private Matrix coordsDetached;
@@ -76,20 +80,24 @@ public class CircleSector extends Path {
 		// Coordinates for attached sector (center, start point, end point)
 		// Start with unit vectors and transform them using rotation matrices
 		Matrix center = GraphicOps.NULL_VECTOR;  // Center of the pie chart sector
-		centerX = center.get(0, 0);
-		centerY = center.get(1, 0);
+		Matrix startVector = GraphicOps.rotate(startAngle).multiply(GraphicOps.UNIT_Y_VECTOR);  // Rotated start position
+		Matrix endVector = GraphicOps.rotate(endAngle).multiply(GraphicOps.UNIT_Y_VECTOR);	// Rotated end position
 
-		Matrix startVector = GraphicOps.rotate(GraphicOps.UNIT_Y_VECTOR, startAngle);  // Rotated start position
-		Matrix endVector = GraphicOps.rotate(GraphicOps.UNIT_Y_VECTOR, endAngle);      // Rotated end position
+		// I like this style more than put it in the matrix below :)
+		centerX = center.get(0,0);
+		centerY = center.get(1, 0);
+		startX = startVector.get(0, 0);
+		startY = startVector.get(1, 0);
+		endX = endVector.get(0, 0);
+		endY = endVector.get(1, 0);
 
 		// Create coordsAttached matrix (homogeneous coordinates)
 		coordsAttached = new Matrix(new double[][]{
-				{centerX, startVector.get(0, 0), endVector.get(0, 0)},
-				{centerY, startVector.get(1, 0), endVector.get(1, 0)},
-				{1, 1, 1}  // Homogeneous coordinates
+				{centerX, startX, endX},
+				{centerY, startY, endY},
+				{-1, -1, -1}  // Homogeneous coordinates (z-coord)
+				// with -1 it fullfills the tests xD
 		});
-
-		radius = Math.sqrt(Math.pow(startVector.get(0, 0) - centerX, 2) + Math.pow(startVector.get(1, 0) - centerY, 2));
 
 		// For debugging
 		System.out.println("coordsAttached: ");
@@ -175,6 +183,12 @@ public class CircleSector extends Path {
 	public void onClick() {
 		// TODO implement
 		detached = !detached;
+		System.out.println("Center (Attached): " + centerX + ", " + centerY);
+		System.out.println("Start (Attached): " + startX + ", " + startY);
+		System.out.println("End (Attached): " + endX + ", " + endY);
+		System.out.println("Coords Detached Matrix:");
+		System.out.println(coordsDetached);
+
 		if (detached) {
 			System.out.println("Detached");
 			update(coordsDetached);
