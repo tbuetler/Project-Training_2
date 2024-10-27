@@ -76,19 +76,31 @@ public class CircleSector extends Path {
 		// Coordinates for attached sector (center, start point, end point)
 		// Start with unit vectors and transform them using rotation matrices
 		Matrix center = GraphicOps.NULL_VECTOR;  // Center of the pie chart sector
+		centerX = center.get(0, 0);
+		centerY = center.get(1, 0);
 
 		Matrix startVector = GraphicOps.rotate(GraphicOps.UNIT_Y_VECTOR, startAngle);  // Rotated start position
 		Matrix endVector = GraphicOps.rotate(GraphicOps.UNIT_Y_VECTOR, endAngle);      // Rotated end position
 
 		// Create coordsAttached matrix (homogeneous coordinates)
 		coordsAttached = new Matrix(new double[][]{
-				{center.get(0, 0), startVector.get(0, 0), endVector.get(0, 0)},
-				{center.get(1, 0), startVector.get(1, 0), endVector.get(1, 0)},
+				{centerX, startVector.get(0, 0), endVector.get(0, 0)},
+				{centerY, startVector.get(1, 0), endVector.get(1, 0)},
 				{1, 1, 1}  // Homogeneous coordinates
 		});
 
+		radius = Math.sqrt(Math.pow(startVector.get(0, 0) - centerX, 2) + Math.pow(startVector.get(1, 0) - centerY, 2));
+
+		// For debugging
+		System.out.println("coordsAttached: ");
+		System.out.println(coordsAttached);
+
 		// Create coordsDetached by applying DETACH_VECTOR (translation)
 		coordsDetached = GraphicOps.translate(coordsAttached, DETACH_VECTOR);
+
+		// For debugging
+		System.out.println("coordsDetached: ");
+		System.out.println(coordsDetached);
 
 		// Initially set the path to the attached state
 		// it changes with the onClick method
@@ -164,9 +176,11 @@ public class CircleSector extends Path {
 		// TODO implement
 		detached = !detached;
 		if (detached) {
-			update(coordsAttached);
-		} else {
+			System.out.println("Detached");
 			update(coordsDetached);
+		} else {
+			System.out.println("Attached");
+			update(coordsAttached);
 		}
 	}
 }

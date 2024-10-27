@@ -51,10 +51,11 @@ public class PieChartUIControl extends Group {
 		for (SalesValue value : values) {
 			double percentage = value.getPercentage();
 			double angle = (percentage / total) * 2.0 * Math.PI; // Calculate the angle for this slice
-			currentAngle += angle;
 			angles.add(currentAngle);
+			currentAngle += angle;
 
 		}
+		angles.add(2.0 * Math.PI); // Add the last angle
 		return angles;
 	}
 

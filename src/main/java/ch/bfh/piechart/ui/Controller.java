@@ -51,7 +51,6 @@ public class Controller {
 				pieChart.addData(chartData);
 				heading.setText("Sales Data Pie Chart");
 
-
 			} catch (Exception ex) {
 				heading.setText(ex.getMessage());
 				ex.printStackTrace();
