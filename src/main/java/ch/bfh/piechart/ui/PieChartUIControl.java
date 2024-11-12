@@ -4,7 +4,7 @@ import ch.bfh.piechart.datalayer.SalesValue;
 
 import java.util.ArrayList;
 import java.util.List;
-
+import javafx.scene.input.MouseEvent;
 import javafx.scene.Group;
 
 public class PieChartUIControl extends Group {
@@ -12,7 +12,8 @@ public class PieChartUIControl extends Group {
 	private double centerX;
 	private double centerY;
 	private double radius;
-	private final List<CircleSector> sectors; // To hold the CircleSectors
+
+	List<CircleSector> sectors = new ArrayList<>(); // To hold the CircleSectors
 
 	/**
 	 * @param x the x-value of the center position
@@ -24,7 +25,6 @@ public class PieChartUIControl extends Group {
 		centerX = x;
 		centerY = y;
 		radius = r;
-		sectors = new ArrayList<>(); // Initialize the list of CircleSector objects
 	}
 
 	/**
@@ -37,25 +37,24 @@ public class PieChartUIControl extends Group {
 	 */
 	public static List<Double> getAngles(List<SalesValue> values) {
 		// TODO: implement
-		double total = 0.0; // Initialize total percentage
-
-		// Calculate the total percentage from the sales values
-		for (SalesValue value : values) {
-			total += value.getPercentage();
+		if (values.isEmpty()) {
+			throw new UnsupportedOperationException("Values list is empty");
 		}
 
+		double totalValue = values.stream().mapToDouble(SalesValue::getNumber).sum(); // Initialize total percentage
 		List<Double> angles = new ArrayList<>(); // List to store calculated angles
 		double currentAngle = 0.0;
 
-		// Calculate angles for each sales value based on its percentage
+		angles.add(0.0);
+
+		// Calculate the total percentage from the sales values
 		for (SalesValue value : values) {
-			double percentage = value.getPercentage();
-			double angle = (percentage / total) * 2.0 * Math.PI; // Calculate the angle for this slice
-			angles.add(currentAngle);
+			double percentage = (value.getNumber()/totalValue);
+			double angle = percentage * 2.0 * Math.PI;
 			currentAngle += angle;
+			angles.add(currentAngle);
+			value.setPercentage(percentage*100);
 		}
-		angles.add(2.0 * Math.PI); // Add the last angle
-		System.out.println("Angles: " + angles);
 		return angles;
 	}
 
@@ -67,29 +66,22 @@ public class PieChartUIControl extends Group {
 	 */
 	public void addData(List<SalesValue> chartData) {
 		// TODO implement
-		sectors.clear(); // Clear previous sectors
-		this.getChildren().clear(); // Remove previous CircleSectors from the UI
-
-		List<Double> angles = getAngles(chartData);
-		double startAngle = 0.0;
-
-		for (int i = 0; i < angles.size(); i++) {
-			double endAngle = angles.get(i);
-			CircleSector sector = new CircleSector(startAngle, endAngle);
-
-			// Register onClick event handler for the sector
-			sector.setOnMouseClicked(event -> {
-				sector.onClick(); // Call the onClick method of CircleSector
-			});
-
-			sectors.add(sector); // Add the sector to the list
-			this.getChildren().add(sector); // Add the sector to the UI
-			startAngle = endAngle; // Update startAngle for the next sector
-			System.out.println("Start angle: " + startAngle + "\nEnd angle: " + endAngle + "\nIndex: " + i + "\nSize: " + sectors.size() + "Count");
+		if (chartData.isEmpty()) {
+			throw new UnsupportedOperationException("chartData is empty");
 		}
 
-		// Update the positions of the sectors after they are created
-		resize(centerX, centerY, radius);
+		List<Double> angles = getAngles(chartData);
+
+		for (int i = 0; i < chartData.size(); i++) {
+			CircleSector sector = new CircleSector(angles.get(i), angles.get(i + 1));
+			sector.update(this.centerX, this.centerY, this.radius);
+			this.sectors.add(sector);
+
+			sector.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sector.onClick());
+			sector.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sector.update(this.centerX, this.centerY, this.radius));
+
+			getChildren().add(sector);
+		}
 	}
 
 
@@ -105,11 +97,8 @@ public class PieChartUIControl extends Group {
 		centerX = newX;
 		centerY = newY;
 		radius = newR;
-
-		// Update the position of each sector to reflect the new size and position
 		for (CircleSector sector : sectors) {
 			sector.update(centerX, centerY, radius);
 		}
 	}
-
 }

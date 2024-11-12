@@ -81,11 +81,11 @@ public class CircleSector extends Path {
 		// Coordinates for attached sector (center, start point, end point)
 		// Start with unit vectors and transform them using rotation matrices
 		Matrix center = GraphicOps.NULL_VECTOR;  // Center of the pie chart sector
-		Matrix startVector = GraphicOps.rotate(startAngle).multiply(GraphicOps.UNIT_Y_VECTOR);  // Rotated start position
-		Matrix endVector = GraphicOps.rotate(endAngle).multiply(GraphicOps.UNIT_Y_VECTOR);	// Rotated end position
+		Matrix startVector = GraphicOps.rotate(startAngle + Math.PI).multiply(GraphicOps.UNIT_Y_VECTOR);  // Rotated start position
+		Matrix endVector = GraphicOps.rotate(endAngle + Math.PI).multiply(GraphicOps.UNIT_Y_VECTOR);    // Rotated end position
 
 		// I like this style more than put it in the matrix below :)
-		centerX = center.get(0,0);
+		centerX = center.get(0, 0);
 		centerY = center.get(1, 0);
 		startX = startVector.get(0, 0);
 		startY = startVector.get(1, 0);
@@ -96,20 +96,11 @@ public class CircleSector extends Path {
 		coordsAttached = new Matrix(new double[][]{
 				{centerX, startX, endX},
 				{centerY, startY, endY},
-				{-1, -1, -1}  // Homogeneous coordinates (z-coord)
-				// somehow it works with -1 as z-coord
+				{1, 1, 1}  // Homogeneous coordinates (z-coord)
 		});
-
-		// For debugging
-		System.out.println("coordsAttached: ");
-		System.out.println(coordsAttached);
 
 		// Create coordsDetached by applying DETACH_VECTOR
 		coordsDetached = GraphicOps.translate(coordsAttached, DETACH_VECTOR);
-
-		// For debugging
-		System.out.println("coordsDetached: ");
-		System.out.println(coordsDetached);
 
 		// Initially set the path to the attached state
 		// it changes with the onClick method
@@ -185,18 +176,12 @@ public class CircleSector extends Path {
 	public void onClick() {
 		// TODO implement
 		detached = !detached;
-		System.out.println("Center (Attached): " + centerX + ", " + centerY);
-		System.out.println("Start (Attached): " + startX + ", " + startY);
-		System.out.println("End (Attached): " + endX + ", " + endY);
-		System.out.println("Coords Detached Matrix:");
-		System.out.println(coordsDetached);
 
 		if (detached) {
-			System.out.println("Detached");
-			update(coordsDetached);
+			System.out.println("Detached.");
 		} else {
-			System.out.println("Attached");
-			update(coordsAttached);
+			System.out.println("Attached.");
 		}
 	}
 }
+

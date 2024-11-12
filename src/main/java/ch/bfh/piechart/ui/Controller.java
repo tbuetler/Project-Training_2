@@ -37,7 +37,7 @@ public class Controller {
 
 			try {
 				// TODO Remove the following line
-				// heading.setText("Here should be a pie chart");
+				heading.setText("Sales Data Pie Chart");
 
 				// TODO Create a PieChartUIControl which fits the window to 80%
 
@@ -45,11 +45,21 @@ public class Controller {
 
 				// TODO Add the SalesValues from the DataProvider to the PieChartUIControl object
 
-				chartData = DataProvider.getValueList();
-				pieChart = new PieChartUIControl(pane.getWidth() / 2, pane.getHeight() / 2, pane.getWidth() * 0.4);
-				pane.getChildren().add(pieChart);
+				// Sales values from the DataProvider
+				DataProvider dataProvider = new DataProvider();
+				chartData = dataProvider.getValueList();
+
+				// create PieChartUIControl, centered and with 80% of the pane size
+				double centerX = pane.getWidth() / 2;
+				double centerY = pane.getHeight() / 2;
+				double radius = Math.min(centerX, centerY) * 0.4;
+
+				pieChart = new PieChartUIControl(centerX, centerY, radius);
 				pieChart.addData(chartData);
-				heading.setText("Sales Data Pie Chart");
+
+				for (CircleSector sector : pieChart.sectors) {
+					pane.getChildren().add(sector);
+				}
 
 			} catch (Exception ex) {
 				heading.setText(ex.getMessage());
