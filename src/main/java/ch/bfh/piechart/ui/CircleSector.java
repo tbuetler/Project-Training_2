@@ -31,14 +31,6 @@ public class CircleSector extends Path {
 	static final int CLASSES = 10;
 	static int classIndex = 0;
 
-	private double centerX;
-	private double centerY;
-	// private double startX;
-	// private double startY;
-	// private double endX;
-	// private double endY;
-	private double radius;
-
 	private boolean detached = false;
 
 	private Matrix coordsDetached;
@@ -67,64 +59,36 @@ public class CircleSector extends Path {
 	 * Creates the control and sets the style class.
 	 */
 	public CircleSector(double startAngle, double endAngle) {
+		// Farbklasse
 		getStyleClass().add("color" + classIndex);
+		// Nächste Farbklasse auswhälen
 		classIndex = (classIndex + 1) % CLASSES;
+		// Initialisierung der Coords
 		coordsAttached = null;
 		coordsDetached = null;
 
-
+		// Definiere den Einheitsvektor in y-Richtung
 		Matrix unitYVector = GraphicOps.UNIT_Y_VECTOR;
 
+		// Definiere den Mittelpunkt des Sekors
+		Matrix centerMatrix = GraphicOps.NULL_VECTOR;
+
+		// Rotiere die Einheitsvektoren um die Start- und Endwinkel
 		Matrix start = GraphicOps.rotate(unitYVector, startAngle);
 		Matrix end = GraphicOps.rotate(unitYVector, endAngle);
 
-		Matrix centerMatrix = GraphicOps.NULL_VECTOR;
-
+		// Berechne die Koordinaten für den attached Sektor
 		coordsAttached = (centerMatrix.append(start)).append(end);
 
+		// Multipliziere die Koordinaten mit der Einheitsmatrix
 		coordsAttached = GraphicOps.UNIT_MATRIX.multiply(coordsAttached);
 
+		// Berechne den Richtungswinkel für den deattached Sektor
 		double directionAngle = startAngle + ((endAngle - startAngle) / 2);
 
+		// Berechne die Koordinaten für den deattached Sektor
 		coordsDetached = GraphicOps.translate(coordsAttached, GraphicOps.rotate(DETACH_VECTOR, directionAngle));
 
-		/*
-		 TODO implement
-		  Calculate attached and detached coordinates
-		  Finally, call the update method to draw the path of the circle sector:
-		 update(coordsAttached);
-		*/
-
-		/*
-		// Coordinates for attached sector (center, start point, end point)
-		// Start with unit vectors and transform them using rotation matrices
-		Matrix center = GraphicOps.NULL_VECTOR;  // Center of the pie chart sector
-		// Rotated start position
-		Matrix startVector = GraphicOps.rotate(startAngle + Math.PI).multiply(GraphicOps.UNIT_Y_VECTOR);
-		// Rotated end position
-		Matrix endVector = GraphicOps.rotate(endAngle + Math.PI).multiply(GraphicOps.UNIT_Y_VECTOR);
-
-		// I like this style more than put it in the matrix below :)
-		centerX = center.get(0, 0);
-		centerY = center.get(1, 0);
-		startX = startVector.get(0, 0);
-		startY = startVector.get(1, 0);
-		endX = endVector.get(0, 0);
-		endY = endVector.get(1, 0);
-
-		// Create coordsAttached matrix (homogeneous coordinates)
-		coordsAttached = new Matrix(new double[][]{
-				{centerX, startX, endX},
-				{centerY, startY, endY},
-				{1, 1, 1}  // Homogeneous coordinates (z-coord)
-		});
-
-		// Create coordsDetached by applying DETACH_VECTOR
-		coordsDetached = GraphicOps.translate(coordsAttached, DETACH_VECTOR);
-		 */
-
-		// Initially set the path to the attached state
-		// it changes with the onClick method
 		update(coordsAttached);
 	}
 
@@ -168,32 +132,16 @@ public class CircleSector extends Path {
 	 * @param r - the radius for the chart
 	 */
 	public void update(double x, double y, double r) {
-		// TODO implement using an transformation matrix created by method createTransformation()
-
 		if (r <= 0) {
-			throw new UnsupportedOperationException();
+			throw new IllegalArgumentException("Radius must be greater than 0");
 		} else {
-			this.centerX = x;
-			this.centerY = y;
-			this.radius = r;
+			// aktualisiere die Koordinaten
 			Matrix scaled;
 
-			if (detached) {
-				scaled = GraphicOps.scale(coordsDetached, radius);
-				update(GraphicOps.translate(scaled, centerX, centerY));
-
-			} else {
-				scaled = GraphicOps.scale(coordsAttached, radius);
-				update(GraphicOps.translate(scaled, centerX, centerY));
-
-			}
+			// aktualisiere die Koordinaten
+			scaled = GraphicOps.scale(detached ? coordsDetached : coordsAttached, r);
+			update(GraphicOps.translate(scaled, x, y));
 		}
-
-		/*
-		Matrix transformationMatrix = createTransformation(x, y, r);
-		Matrix newCoords = transformationMatrix.multiply(coordsAttached);
-		update(newCoords);
-		 */
 	}
 
 	/**
@@ -205,7 +153,6 @@ public class CircleSector extends Path {
 	 * @param r - the radius for the chart
 	 */
 	public static Matrix createTransformation(double x, double y, double r) {
-		// TODO implement
 		return new Matrix(new double[][]{
 				{r, 0, x},
 				{0, r, y},
@@ -217,7 +164,6 @@ public class CircleSector extends Path {
 	 * Called when the user clicks a slice in the user interface.
 	 **/
 	public void onClick() {
-		// TODO implement
 		detached = !detached;
 
 		if (detached) {

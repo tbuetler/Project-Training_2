@@ -38,14 +38,7 @@ public class Controller {
 		Platform.runLater(() -> {
 
 			try {
-				// TODO Remove the following line
 				heading.setText("Sales Data Pie Chart");
-
-				// TODO Create a PieChartUIControl which fits the window to 80%
-
-				// TODO Add the PieChartUIControl object to the pane
-
-				// TODO Add the SalesValues from the DataProvider to the PieChartUIControl object
 
 				// Sales values from the DataProvider
 				DataProvider dataProvider = new DataProvider();

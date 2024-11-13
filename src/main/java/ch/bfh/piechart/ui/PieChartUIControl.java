@@ -23,7 +23,6 @@ public class PieChartUIControl extends Group {
 	 * @param r the radius for the chart
 	 */
 	public PieChartUIControl(double x, double y, double r) {
-		// TODO Implement
 		centerX = x;
 		centerY = y;
 		radius = r;
@@ -38,7 +37,6 @@ public class PieChartUIControl extends Group {
 	 * @return List of angles (Double)
 	 */
 	public static List<Double> getAngles(List<SalesValue> values) {
-		// TODO: implement
 		if (values.isEmpty()) {
 			throw new UnsupportedOperationException("Values list is empty");
 		}
@@ -67,7 +65,6 @@ public class PieChartUIControl extends Group {
 	 * @param chartData List of SalesValue
 	 */
 	public void addData(List<SalesValue> chartData) {
-		// TODO implement
 		if (chartData.isEmpty()) {
 			throw new UnsupportedOperationException("chartData is empty");
 		}
@@ -97,7 +94,6 @@ public class PieChartUIControl extends Group {
 	 * @param newR - the new radius for the chart
 	 */
 	public void resize(double newX, double newY, double newR) {
-		// TODO implement
 		centerX = newX;
 		centerY = newY;
 		radius = newR;
