@@ -57,9 +57,10 @@ public class Controller {
 				}
 
 			} catch (Exception ex) {
-				heading.setText(ex.getMessage());
+				heading.setText("Error: " + ex.getMessage());
 				ex.printStackTrace();
 			}
+			pieChart.resize(pane.getWidth() / 2, pane.getHeight() / 2, Math.min(pane.getWidth(), pane.getHeight()) * MAGIC_NUMBER);
 		});
 	}
 
@@ -76,8 +77,8 @@ public class Controller {
 			}
 		};
 
+		// Set listeners
 		pane.widthProperty().addListener(paneSizeListener);
 		pane.heightProperty().addListener(paneSizeListener);
 	}
-
 }

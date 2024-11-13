@@ -63,9 +63,6 @@ public class CircleSector extends Path {
 		getStyleClass().add("color" + classIndex);
 		// Nächste Farbklasse auswhälen
 		classIndex = (classIndex + 1) % CLASSES;
-		// Initialisierung der Coords
-		coordsAttached = null;
-		coordsDetached = null;
 
 		// Definiere den Einheitsvektor in y-Richtung
 		Matrix unitYVector = GraphicOps.UNIT_Y_VECTOR;
@@ -76,6 +73,10 @@ public class CircleSector extends Path {
 		// Rotiere die Einheitsvektoren um die Start- und Endwinkel
 		Matrix start = GraphicOps.rotate(unitYVector, startAngle);
 		Matrix end = GraphicOps.rotate(unitYVector, endAngle);
+
+		// Initialisierung der Coords
+		coordsAttached = (centerMatrix.append(start)).append(end);
+		coordsDetached = GraphicOps.UNIT_MATRIX.multiply(coordsAttached);
 
 		// Berechne die Koordinaten für den attached Sektor
 		coordsAttached = (centerMatrix.append(start)).append(end);
