@@ -25,7 +25,6 @@ public class Controller {
 
 	private List<SalesValue> chartData;
 	private PieChartUIControl pieChart;
-
 	private static final double MAGIC_NUMBER = 0.4;
 
 	/**
