@@ -16,6 +16,11 @@ public class GraphicOps {
 	/** A null vector **/
 	public static final Matrix NULL_VECTOR = new Matrix(new double[][] { { 0.0 }, { 0.0 }, { 1.0 } });
 
+	/** A unit matrix
+	 *  It is needed for the translation method in the homogeneous coordinates
+	 */
+	public static final Matrix UNIT_MATRIX = new Matrix(new double[][] { {1, 0, 0}, {0, 1, 0}, {0, 0, -1} });
+
 	/**
 	 * Returns a rotation matrix for the given angle.
 	 *

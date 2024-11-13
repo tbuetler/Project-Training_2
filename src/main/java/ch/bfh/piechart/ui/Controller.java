@@ -26,6 +26,8 @@ public class Controller {
 	private List<SalesValue> chartData;
 	private PieChartUIControl pieChart;
 
+	private static final double MAGIC_NUMBER = 0.4;
+
 	/**
 	 * Creates the controller.
 	 * Gets the sales values from the Data Provider class and
@@ -52,7 +54,7 @@ public class Controller {
 				// create PieChartUIControl, centered and with 80% of the pane size
 				double centerX = pane.getWidth() / 2;
 				double centerY = pane.getHeight() / 2;
-				double radius = Math.min(centerX, centerY) * 0.4;
+				double radius = Math.min(centerX, centerY) * MAGIC_NUMBER;
 
 				pieChart = new PieChartUIControl(centerX, centerY, radius);
 				pieChart.addData(chartData);
@@ -77,7 +79,7 @@ public class Controller {
 			if (pieChart != null) {
 				double width = pane.getWidth();
 				double height = pane.getHeight();
-				pieChart.resize(width / 2, height / 2, Math.min(width, height) * 0.4);
+				pieChart.resize(width / 2, height / 2, Math.min(width, height) * MAGIC_NUMBER);
 			}
 		};
 

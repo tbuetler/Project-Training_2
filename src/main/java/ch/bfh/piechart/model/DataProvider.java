@@ -22,6 +22,8 @@ import java.util.List;
 
 public class DataProvider {
 	private static final List<SalesValue> salesValues;
+
+	private static final double MAGIC_NUMBER = 100;
 	/*
 		* Loads all sales values, computes there relative percentage values, and stores
 		* the updated sales values in the database.
@@ -51,7 +53,7 @@ public class DataProvider {
 			}
 
 			for (SalesValue salesValue : salesValues) {
-				double percentage = (salesValue.getNumber() / (double) totalSum * 100);
+				double percentage = (salesValue.getNumber() / (double) totalSum * MAGIC_NUMBER);
 				salesValue.setPercentage(percentage);
 			}
 

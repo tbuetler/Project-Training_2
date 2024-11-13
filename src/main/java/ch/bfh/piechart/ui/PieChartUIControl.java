@@ -15,6 +15,8 @@ public class PieChartUIControl extends Group {
 
 	List<CircleSector> sectors = new ArrayList<>(); // To hold the CircleSectors
 
+	private static final double MAGIC_NUMBER = 100;
+
 	/**
 	 * @param x the x-value of the center position
 	 * @param y the y-value of the center position
@@ -49,11 +51,11 @@ public class PieChartUIControl extends Group {
 
 		// Calculate the total percentage from the sales values
 		for (SalesValue value : values) {
-			double percentage = (value.getNumber()/totalValue);
+			double percentage = (value.getNumber() / totalValue);
 			double angle = percentage * 2.0 * Math.PI;
 			currentAngle += angle;
 			angles.add(currentAngle);
-			value.setPercentage(percentage*100);
+			value.setPercentage(percentage * MAGIC_NUMBER);
 		}
 		return angles;
 	}
@@ -77,8 +79,10 @@ public class PieChartUIControl extends Group {
 			sector.update(this.centerX, this.centerY, this.radius);
 			this.sectors.add(sector);
 
-			sector.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sector.onClick());
-			sector.addEventHandler(MouseEvent.MOUSE_CLICKED, event -> sector.update(this.centerX, this.centerY, this.radius));
+			sector.addEventHandler(MouseEvent.MOUSE_CLICKED, event
+					-> sector.onClick());
+			sector.addEventHandler(MouseEvent.MOUSE_CLICKED, event
+					-> sector.update(this.centerX, this.centerY, this.radius));
 
 			getChildren().add(sector);
 		}
