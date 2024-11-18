@@ -28,11 +28,15 @@ public class CircleSector extends Path {
 			{1.0}
 	});
 
+	// Farbklasse
 	static final int CLASSES = 10;
+	// Farbklasse
 	static int classIndex = 0;
 
+	// Attached or detached
 	private boolean detached = false;
 
+	// Coordinates
 	private Matrix coordsDetached;
 	private Matrix coordsAttached;
 
