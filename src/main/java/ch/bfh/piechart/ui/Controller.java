@@ -40,26 +40,38 @@ public class Controller {
 				heading.setText("Sales Data Pie Chart");
 
 				// Sales values from the DataProvider
-				DataProvider dataProvider = new DataProvider();
-				chartData = dataProvider.getValueList();
+				// the DataProvider is not intended to be instantiated.
+				// DataProvider dataProvider = new DataProvider();
+				chartData = DataProvider.getValueList();
 
 				// create PieChartUIControl, centered and with 80% of the pane size
 				double centerX = pane.getWidth() / 2;
 				double centerY = pane.getHeight() / 2;
 				double radius = Math.min(centerX, centerY) * MAGIC_NUMBER;
 
+				// create PieChartUIControl
 				pieChart = new PieChartUIControl(centerX, centerY, radius);
 				pieChart.addData(chartData);
 
+				// add PieChartUIControl to pane
 				for (CircleSector sector : pieChart.sectors) {
 					pane.getChildren().add(sector);
 				}
 
 			} catch (Exception ex) {
 				heading.setText("Error: " + ex.getMessage());
-				ex.printStackTrace();
+				// Intellij didn't like the PrintStackTrace() call
+				// ex.printStackTrace();
+				System.out.println("Error: " + ex.getMessage());
 			}
-			pieChart.resize(pane.getWidth() / 2, pane.getHeight() / 2, Math.min(pane.getWidth(), pane.getHeight()) * MAGIC_NUMBER);
+			// The resize method is called here to ensure that the pie chart is correctly positioned and sized
+			// within the pane after its initial creation. This accounts for any changes in the pane size
+			// that might have occurred between the creation of the pie chart and the execution of this
+			// block, making sure the pie chart is displayed as expected.
+			pieChart.resize(pane.getWidth() / 2,
+					pane.getHeight() / 2,
+					Math.min(pane.getWidth(),
+							pane.getHeight()) * MAGIC_NUMBER);
 		});
 	}
 

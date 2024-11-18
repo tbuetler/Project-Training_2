@@ -19,7 +19,7 @@ import java.util.List;
 	*/
 
 public class DataProvider {
-	private static final List<SalesValue> salesValues;
+	private static final List<SalesValue> SALES_VALUES;
 
 	private static final double MAGIC_NUMBER = 100;
 	/*
@@ -41,22 +41,22 @@ public class DataProvider {
 			Connection connection = ConnectionManager.getConnection(true);
 
 			// 2. It reads all sales values available;
-			salesValues = new SalesValueRepository(connection).findAll();
+			SALES_VALUES = new SalesValueRepository(connection).findAll();
 
 			// 3. It computes the relative percentage for the sales values;
 			int totalSum = 0;
-			for (SalesValue salesValue : salesValues) {
+			for (SalesValue salesValue : SALES_VALUES) {
 				totalSum += salesValue.getNumber();
 			}
 
-			for (SalesValue salesValue : salesValues) {
+			for (SalesValue salesValue : SALES_VALUES) {
 				double percentage = (salesValue.getNumber() / (double) totalSum * MAGIC_NUMBER);
 				salesValue.setPercentage(percentage);
 			}
 
 			// 4. It updates the sales values in the database.
 			SalesValueRepository repository = new SalesValueRepository(connection);
-			for (SalesValue salesValue : salesValues) {
+			for (SalesValue salesValue : SALES_VALUES) {
 				repository.update(salesValue);
 			}
 
@@ -73,9 +73,9 @@ public class DataProvider {
 		* @throws Exception if sales values cannot be obtained
 		*/
 	public static List<SalesValue> getValueList() throws Exception {
-		if (salesValues == null || salesValues.isEmpty()) {
+		if (SALES_VALUES == null || SALES_VALUES.isEmpty()) {
 			throw new Exception("Sales values not initialized");
 		}
-		return salesValues;
+		return SALES_VALUES;
 	}
 }
