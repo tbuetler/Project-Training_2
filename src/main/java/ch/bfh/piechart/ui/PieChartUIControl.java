@@ -37,14 +37,19 @@ public class PieChartUIControl extends Group {
 	 * @return List of angles (Double)
 	 */
 	public static List<Double> getAngles(List<SalesValue> values) {
+		// Check if values list is empty
 		if (values.isEmpty()) {
 			throw new UnsupportedOperationException("Values list is empty");
 		}
 
-		double totalValue = values.stream().mapToDouble(SalesValue::getNumber).sum(); // Initialize total percentage
-		List<Double> angles = new ArrayList<>(); // List to store calculated angles
+		// Initialize total percentage
+		double totalValue = values.stream().mapToDouble(SalesValue::getNumber).sum();
+		// List to store calculated angles
+		List<Double> angles = new ArrayList<>();
+		// Initialize current angle
 		double currentAngle = 0.0;
 
+		// Add first angle
 		angles.add(0.0);
 
 		// Calculate the total percentage from the sales values
@@ -65,12 +70,14 @@ public class PieChartUIControl extends Group {
 	 * @param chartData List of SalesValue
 	 */
 	public void addData(List<SalesValue> chartData) {
+		// Check if chartData is empty
 		if (chartData.isEmpty()) {
 			throw new UnsupportedOperationException("chartData is empty");
 		}
 
 		List<Double> angles = getAngles(chartData);
 
+		// Add each CircleSector
 		for (int i = 0; i < chartData.size(); i++) {
 			CircleSector sector = new CircleSector(angles.get(i), angles.get(i + 1));
 			sector.update(this.centerX, this.centerY, this.radius);

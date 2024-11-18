@@ -80,6 +80,10 @@ public class Controller {
 	 * size changes.
 	 */
 	public void initialize() {
+		// We register a listener here that is called when the window size
+		// changes. The listener method is called with the new width and height
+		// of the pane. It then resizes the pie chart accordingly so that it
+		// is always centered and takes up 80% of the pane size.
 		ChangeListener<Number> paneSizeListener = (observable, oldValue, newValue) -> {
 			if (pieChart != null) {
 				double width = pane.getWidth();

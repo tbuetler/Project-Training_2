@@ -61,6 +61,7 @@ public class CircleSector extends Path {
 	public CircleSector(double startAngle, double endAngle) {
 		// Farbklasse
 		getStyleClass().add("color" + classIndex);
+
 		// Nächste Farbklasse auswhälen
 		classIndex = (classIndex + 1) % CLASSES;
 
@@ -133,6 +134,7 @@ public class CircleSector extends Path {
 	 * @param r - the radius for the chart
 	 */
 	public void update(double x, double y, double r) {
+		// check if the radius is greater than 0
 		if (r <= 0) {
 			throw new IllegalArgumentException("Radius must be greater than 0");
 		} else {
@@ -165,8 +167,10 @@ public class CircleSector extends Path {
 	 * Called when the user clicks a slice in the user interface.
 	 **/
 	public void onClick() {
+		// toggle between attached and detached
 		detached = !detached;
 
+		// update the coordinates
 		if (detached) {
 			update(coordsDetached);
 		} else {
